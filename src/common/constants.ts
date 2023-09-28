@@ -1,0 +1,11 @@
+export enum RabbitMQ {
+  AuthorizationQueue = 'authorization',
+}
+
+export enum UserMSG {
+  CREATE = 'CREATE_USER',
+  FIND_ALL = 'FIND_USERS',
+  FIND_ONE = 'FIND_USER',
+  UPDATE = 'UPDATE_USER',
+  DELETE = 'DELETE_USER',
+}
