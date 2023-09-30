@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) { }
 
   async validateUser(userName: string, password: string) {
     const user = await this.usersService.findByUserName(userName);
@@ -14,7 +14,6 @@ export class AuthService {
         return user;
       }
     }
-    console.log('service');
     return null;
   }
 }

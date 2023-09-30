@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MessagePattern, Payload } from '@nestjs/microservices/decorators';
 
@@ -7,9 +7,9 @@ import { userDto, updateUserDto } from '../dtos/user.dto';
 import { UserMSG } from 'src/common/constants';
 
 @ApiTags('Users')
-@Controller('users')
+@Controller('api/v1/users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) { }
 
   @MessagePattern(UserMSG.FIND_ALL)
   async findAll() {
@@ -99,6 +99,24 @@ export class UsersController {
       return {
         success: false,
         message: 'Failed to delete user',
+        error: error.message,
+      };
+    }
+  }
+
+  @MessagePattern('recoverPassword')
+  async recoverPassword(@Body() payload: any) {
+    try {
+      const updatedPassword = await this.usersService.recoverPassword(payload.userName);
+      return {
+        success: true,
+        message: 'Recovery password generated succesfully',
+        data: updatedPassword,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Failed to generate recovery password',
         error: error.message,
       };
     }

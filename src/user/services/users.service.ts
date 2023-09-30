@@ -6,13 +6,14 @@ import {
 import { InjectRepository } from '@nestjs/typeorm/dist';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import * as generator from 'generate-password';
 
 import { User } from '../entities/users.entity';
 import { userDto, updateUserDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  constructor(@InjectRepository(User) private userRepo: Repository<User>) { }
 
   async findAll() {
     return this.userRepo.find();
@@ -57,5 +58,27 @@ export class UsersService {
     }
     this.userRepo.delete({ id });
     return user;
+  }
+
+  async recoverPassword(userName: string) {
+    console.log(userName);
+    const user = await this.userRepo.findOne({ where: { userName } });
+    if (!user) {
+      throw new NotFoundException(`User ${userName} not found`);
+    }
+    const generatedPassword = generator.generate(
+      {
+        length: 8,
+        uppercase: true,
+        numbers: true,
+        symbols: "*",
+        strict: true,
+      })
+    const hashPassword = await bcrypt.hash(generatedPassword, 10);
+    user.password = hashPassword;
+    await this.userRepo.save(user).catch((error) => {
+      throw new ConflictException(error.detail);
+    });
+    return generatedPassword;
   }
 }

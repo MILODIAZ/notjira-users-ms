@@ -7,15 +7,14 @@ import { Strategy } from 'passport-local';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(private authService: AuthService) {
-    super(/*{
+    super({
       usernameField: 'userName',
-    }*/);
+    });
   }
 
   async validate(userName: string, password: string) {
     const user = await this.authService.validateUser(userName, password);
     if (!user) {
-      console.log('strategy');
       throw new UnauthorizedException('Not allowed');
     }
     return user;
