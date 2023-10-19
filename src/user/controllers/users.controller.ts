@@ -125,4 +125,26 @@ export class UsersController {
       };
     }
   }
+
+  @MessagePattern(UserMSG.JWT)
+  async updateJWT(@Payload() message: { userName: string; token: string }) {
+    try {
+      const updateUser = await this.usersService.updateJWT(
+        message.userName,
+        message.token,
+      );
+      console.log('user updated');
+      return {
+        success: true,
+        message: 'JWT updated succesfully',
+        data: updateUser,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Failed to update JWT',
+        error: error.message,
+      };
+    }
+  }
 }

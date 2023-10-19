@@ -12,6 +12,10 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Exclude()
+  @Column({ nullable: true })
+  jwt: string;
+
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
