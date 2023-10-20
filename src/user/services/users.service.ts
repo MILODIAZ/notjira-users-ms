@@ -40,10 +40,10 @@ export class UsersService {
     });
   }
 
-  async update(id: number, payload: updateUserDto) {
-    const user = await this.userRepo.findOneBy({ id });
+  async update(userName: string, payload: updateUserDto) {
+    const user = await this.userRepo.findOneBy({ userName });
     if (!user) {
-      throw new NotFoundException(`User #${id} not found`);
+      throw new NotFoundException(`User ${userName} not found`);
     }
     this.userRepo.merge(user, payload);
     return await this.userRepo.save(user).catch((error) => {
