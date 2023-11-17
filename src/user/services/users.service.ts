@@ -13,7 +13,7 @@ import { userDto, updateUserDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  constructor(@InjectRepository(User) private userRepo: Repository<User>) { }
 
   async findAll() {
     return this.userRepo.find();
@@ -51,12 +51,12 @@ export class UsersService {
     });
   }
 
-  async delete(id: number) {
-    const user = await this.userRepo.findOneBy({ id });
+  async delete(userName: string) {
+    const user = await this.userRepo.findOneBy({ userName });
     if (!user) {
-      throw new NotFoundException(`User #${id} not found`);
+      throw new NotFoundException(`User ${userName} not found`);
     }
-    this.userRepo.delete({ id });
+    this.userRepo.delete({ userName });
     return user;
   }
 
