@@ -13,7 +13,7 @@ import { userDto, updateUserDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) { }
+  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
 
   async findAll() {
     return this.userRepo.find();
