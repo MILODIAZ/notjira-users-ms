@@ -45,4 +45,13 @@ export class updateUserDto {
   @IsNotEmpty()
   @IsEmail()
   readonly email: string;
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly role: userRole;
+}
+
+enum userRole {
+  DEVELOPER = 'desarrollador',
+  ADMIN = 'administrador',
 }

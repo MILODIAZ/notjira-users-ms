@@ -7,6 +7,11 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
+enum userRole {
+  DEVELOPER = 'desarrollador',
+  ADMIN = 'administrador',
+}
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -31,6 +36,13 @@ export class User {
 
   @Column({ type: 'varchar', length: 255 })
   email: string;
+
+  @Column({
+    type: 'enum',
+    enum: userRole,
+    default: userRole.DEVELOPER,
+  })
+  role: userRole;
 
   @CreateDateColumn({
     name: 'created_at',
